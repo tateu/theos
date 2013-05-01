@@ -20,8 +20,7 @@ internal-install::
 		echo "Could not find \"$(THEOS_PACKAGE_DIR)/$(THEOS_PACKAGE_FILENAME).deb\" to install. Aborting." >&2; \
 		exit 1; \
 	fi
-	install.copyFile "$(THEOS_PACKAGE_DIR)/$(THEOS_PACKAGE_FILENAME).deb" "$(THEOS_PACKAGE_FILENAME).deb"
-	install.exec "dpkg -i $(THEOS_PACKAGE_FILENAME).deb"
+	install.exec "cat > /tmp/_theos_install.deb; dpkg -i /tmp/_theos_install.deb && rm /tmp/_theos_install.deb" < "$(THEOS_PACKAGE_DIR)/$(THEOS_PACKAGE_FILENAME).deb"
 else # _THEOS_CAN_PACKAGE == 0
 internal-install:: stage
 	install.mergeDir "$(THEOS_STAGING_DIR)" "/"
