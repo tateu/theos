@@ -1,6 +1,8 @@
 package Logos::Class;
 use strict;
 
+use Syntel::Type;
+
 sub new {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
@@ -24,7 +26,10 @@ sub new {
 # #####################
 sub name {
 	my $self = shift;
-	if(@_) { $self->{NAME} = shift; }
+	if(@_) {
+		$self->{NAME} = shift;
+		$self->{TYPE} = Syntel::Type->new($self->{NAME})->pointer;
+	}
 	return $self->{NAME};
 }
 
@@ -32,7 +37,7 @@ sub expression {
 	my $self = shift;
 	if(@_) {
 		$self->{EXPR} = shift;
-		$self->type("id");
+		$self->type($Syntel::Type::ID);
 		$self->{OVERRIDDEN} = 1;
 	}
 	return $self->{EXPR};
@@ -50,8 +55,7 @@ sub metaexpression {
 sub type {
 	my $self = shift;
 	if(@_) { $self->{TYPE} = shift; }
-	return $self->{TYPE} if $self->{TYPE};
-	return $self->{NAME}."*";
+	return $self->{TYPE};
 }
 
 sub hasmetahooks {
