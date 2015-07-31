@@ -23,6 +23,11 @@ endif # _THEOS_HAS_STAGING_LAYOUT
 	$(ECHO_NOTHING)sed -e '/^[Vv]ersion:/d' "$(_THEOS_DEB_PACKAGE_CONTROL_PATH)" > "$@"$(ECHO_END)
 	$(ECHO_NOTHING)echo "Version: $(_THEOS_INTERNAL_PACKAGE_VERSION)" >> "$@"$(ECHO_END)
 	$(ECHO_NOTHING)echo "Installed-Size: $(shell du $(_THEOS_PLATFORM_DU_EXCLUDE) DEBIAN -ks "$(THEOS_STAGING_DIR)" | cut -f 1)" >> "$@"$(ECHO_END)
+	$(ECHO_NOTHING)find "$(THEOS_STAGING_DIR)" -type f -exec chmod 644 {} \;$(ECHO_END)
+	$(ECHO_NOTHING)find "$(THEOS_STAGING_DIR)" -type d -exec chmod 755 {} \;$(ECHO_END)
+	$(ECHO_NOTHING)find "$(THEOS_STAGING_DIR)" -type f -name *.dylib -exec chmod 755 {} \;$(ECHO_END)
+	$(ECHO_NOTHING)find "$(THEOS_STAGING_DIR)" -type f ! -name "*.*" -exec chmod 755 {} \;$(ECHO_END)
+	$(ECHO_NOTHING)chmod 644 "$(THEOS_STAGING_DIR)/DEBIAN/control"$(ECHO_END)
 
 before-package:: $(_THEOS_ESCAPED_STAGING_DIR)/DEBIAN/control
 
